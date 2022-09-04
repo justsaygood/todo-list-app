@@ -7,6 +7,7 @@ import Footer from "../Footer/footer";
 import "./app.css";
 
 export default class App extends Component {
+    maxId = 100;
 
     state = {
         todoData: [
@@ -28,6 +29,17 @@ export default class App extends Component {
                 edited: false,
             },
         ]
+    };
+
+    createTask(description, id) {
+        const trimDescription = description.replace(/ +/g, ' ').trim();
+
+        return {
+            id,
+            description: trimDescription,
+            completed: false,
+            edited: false,
+        };
     };
 
     completeTask = (id) => {
@@ -92,16 +104,16 @@ export default class App extends Component {
       });
     };
 
-    createTask(description, id) {
-        const trimDescription = description.replace(/ +/g, ' ').trim();
+    addTask = (description) => {
+        const newItem = this.createTask(description, this.maxId++);
+        this.setState(({ todoData }) => {
+            const newTodoData = [...todoData, newItem];
+            return {
+                todoData: newTodoData,
+            };
+        })
+    }
 
-        return {
-            id,
-            description: trimDescription,
-            completed: false,
-            edited: false,
-        };
-    };
 
     render() {
         const {todoData} = this.state
@@ -110,7 +122,8 @@ export default class App extends Component {
                 <header className="header">
                     <h1>todos</h1>
                 </header>
-                <NewTaskForm />
+                <NewTaskForm
+                    addTask= {this.addTask} />
                 <TaskList
                     taskData = {todoData}
                     onToggleDone = { this.completeTask }
