@@ -22,7 +22,7 @@ export default class App extends Component {
     };
 
     static defaultProps = {
-        dataStream: [
+        todoData: [
             {
                 completed: false,
                 edited: false,
@@ -64,6 +64,25 @@ export default class App extends Component {
         });
     }
 
+    changeDescription = (id, description) => {
+        this.setState(({ todoData }) => {
+            const newTodoData = todoData.map((el) => {
+                if (el.id === id) {
+                    return {
+                        ...el,
+                        description,
+                        completed: false,
+                        edited: false,
+                    };
+                }
+                return el;
+            })
+            return {
+                todoData: newTodoData,
+            };
+        });
+    };
+
     deleteTask = (id) => {
       this.setState(({todoData}) => {
           const newTodoData = todoData.filter((el) => el.id !== id);
@@ -96,7 +115,8 @@ export default class App extends Component {
                     taskData = {todoData}
                     onToggleDone = { this.completeTask }
                     onEditClick =  { this.editTask }
-                    onCloseClick= { this.deleteTask }/>
+                    onCloseClick= { this.deleteTask }
+                    onChangeDescription ={this.changeDescription}/>
                 <Footer />
             </section>
         );
