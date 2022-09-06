@@ -11,15 +11,16 @@ export default class Task extends React.Component {
 
     render () {
 
-        const { description, onToggleDone, onCloseClick, onEditClick} = this.props;
+        const { description, onToggleDone, onCloseClick, onEditClick, checked, creationTime } = this.props;
 
         return (
                 <div className="view">
-                    <input className="toggle" type="checkbox"
-                           onClick= { onToggleDone } />
+                    <input className="toggle" type="checkbox" readOnly
+                           onClick= { onToggleDone }
+                           checked= {checked} />
                         <label>
                             <span className="description">{ description }</span>
-                            <span className="created">created 5 minutes ago</span>
+                            <span className="created">created {creationTime} ago</span>
                         </label>
                         <button className="icon icon-edit"
                                 type="button"

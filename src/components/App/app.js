@@ -14,12 +14,14 @@ export default class App extends Component {
             this.createTask('Learn React', 1 ),
             this.createTask('Create App', 2),
             this.createTask('Drink coffee', 3),
-        ]
+        ],
+        filterData: 'all',
     };
 
 
     static propTypes = {
-        todoData: PropTypes.instanceOf(Array)
+        todoData: PropTypes.instanceOf(Array),
+        filterData: PropTypes.string,
     };
 
     static defaultProps = {
@@ -27,6 +29,7 @@ export default class App extends Component {
             {
                 completed: false,
                 edited: false,
+                created: new Date(),
             },
         ]
     };
@@ -37,6 +40,7 @@ export default class App extends Component {
         return {
             id,
             description: trimDescription,
+            created: new Date(),
             completed: false,
             edited: false,
         };
@@ -111,12 +115,29 @@ export default class App extends Component {
             return {
                 todoData: newTodoData,
             };
-        })
-    }
+        });
+    };
+
+    clearCompleted = () => {
+        this.setState(({ todoData }) => {
+            const newTodoData = todoData.filter((el) => el.completed === false);
+            return {
+                todoData: newTodoData,
+            };
+        });
+    };
+
+    onFilterChange = (event) => {
+        this.setState({
+            filterData: event.target.innerText.toLowerCase(),
+        });
+    };
 
 
     render() {
-        const {todoData} = this.state
+        const { todoData, filterData } = this.state
+        const tasksLeftCount = todoData.filter((el) => !el.completed).length;
+
         return (
             <section className="todoapp">
                 <header className="header">
@@ -128,9 +149,13 @@ export default class App extends Component {
                     taskData = {todoData}
                     onToggleDone = { this.completeTask }
                     onEditClick =  { this.editTask }
-                    onCloseClick= { this.deleteTask }
-                    onChangeDescription ={this.changeDescription}/>
-                <Footer />
+                    onCloseClick = { this.deleteTask }
+                    onChangeDescription = {this.changeDescription}
+                    taskFilter = {filterData}/>
+                <Footer tasksLeftCount= {tasksLeftCount}
+                        clearCompleted= {this.clearCompleted}
+                        onFilterChange= {this.onFilterChange}
+                         />
             </section>
         );
     }
