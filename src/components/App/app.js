@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+
 import NewTaskForm from "../NewTaskForm/new-task-form";
 import TaskList from "../TaskList/task-list";
 import Footer from "../Footer/footer";

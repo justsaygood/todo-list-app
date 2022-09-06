@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import "./task-filter.css";
 
@@ -8,7 +9,15 @@ export default class TasksFilter extends React.Component {
         allBtn: true,
         activeBtn: false,
         completedBtn: false,
-    }
+    };
+
+    static defaultProps = {
+        onFilterChange: () => {},
+    };
+
+    static propTypes = {
+        onFilterChange: PropTypes.func,
+    };
 
     onClickButton = (event) => {
         const buttonClicked = event.target.innerText.toLowerCase();

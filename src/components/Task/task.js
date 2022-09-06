@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import "./task.css";
 
@@ -8,6 +9,23 @@ export default class Task extends React.Component {
         id: this.props.id,
     };
 
+    static propTypes = {
+        checked: PropTypes.bool,
+        onToggleDone: PropTypes.func,
+        description: PropTypes.string,
+        creationTime: PropTypes.string,
+        onEditClick: PropTypes.func,
+        onCloseClick: PropTypes.func,
+    };
+
+    static defaultProps = {
+        description: 'Please, set the task',
+        checked: false,
+        onToggleDone: () => {},
+        creationTime: () => {},
+        onEditClick: () => {},
+        onCloseClick: () => {},
+    };
 
     render () {
 
