@@ -10,7 +10,24 @@ export default class App extends Component {
   maxId = 100
 
   state = {
-    todoData: [this.createTask('Learn React', 1), this.createTask('Create App', 2), this.createTask('Drink coffee', 3)],
+    todoData: [
+      this.createTask('Learn React', 1, 40, 0),
+      this.createTask('Create App', 2, 20, 0),
+      this.createTask('Drink coffee', 3, 5, 0),
+    ],
+    filterData: 'all',
+  }
+
+  static defaultProps = {
+    todoData: [
+      {
+        created: new Date(),
+        completed: false,
+        edited: false,
+        minutes: 30,
+        seconds: 30,
+      },
+    ],
     filterData: 'all',
   }
 
@@ -76,8 +93,8 @@ export default class App extends Component {
     })
   }
 
-  addTask = (description) => {
-    const newItem = this.createTask(description, this.maxId++)
+  addTask = (description, minutes, seconds) => {
+    const newItem = this.createTask(description, this.maxId++, minutes, seconds)
     this.setState(({ todoData }) => {
       const newTodoData = [...todoData, newItem]
       return {
@@ -101,8 +118,14 @@ export default class App extends Component {
     })
   }
 
-  createTask(description, id) {
+  createTask(description, id, minutes, seconds) {
     const trimDescription = description.replace(/ +/g, ' ').trim()
+    let minValueNumber = +minutes
+    let secValueNumber = +seconds
+    if (secValueNumber > 60) {
+      minValueNumber += Math.trunc(secValueNumber / 60)
+      secValueNumber -= Math.trunc(secValueNumber / 60) * 60
+    }
 
     return {
       id,
@@ -110,6 +133,8 @@ export default class App extends Component {
       created: new Date(),
       completed: false,
       edited: false,
+      minutes: minValueNumber,
+      seconds: secValueNumber,
     }
   }
 

@@ -16,7 +16,7 @@ export default function TaskList({
   taskFilter,
 }) {
   const elements = taskData.map((item) => {
-    const { id } = item
+    const { id, minutes, seconds } = item
     const creationTime = formatDistanceToNow(new Date(item.created))
 
     let classNames = 'active'
@@ -37,6 +37,8 @@ export default function TaskList({
           <Task
             description={item.description}
             checked={checked}
+            minutes={minutes}
+            seconds={seconds}
             creationTime={creationTime}
             onToggleDone={() => onToggleDone(id)}
             onEditClick={() => onEditClick(id)}
@@ -57,6 +59,8 @@ export default function TaskList({
             className={classNames}
             creationTime={creationTime}
             checked={checked}
+            minutes={minutes}
+            seconds={seconds}
             onToggleDone={() => onToggleDone(id)}
             onEditClick={() => onEditClick(id)}
             onCloseClick={() => onCloseClick(id)}
