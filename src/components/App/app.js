@@ -11,7 +11,7 @@ export default class App extends Component {
 
   state = {
     todoData: [
-      this.createTask('Learn React', 1, 40, 0),
+      this.createTask('Learn React', 1, 1, 0),
       this.createTask('Create App', 2, 20, 0),
       this.createTask('Drink coffee', 3, 5, 0),
     ],
@@ -94,7 +94,7 @@ export default class App extends Component {
   }
 
   addTask = (description, minutes, seconds) => {
-    const newItem = this.createTask(description, this.maxId++, minutes, seconds)
+    const newItem = this.createTask(description, this.maxId++, Number(minutes), Number(seconds))
     this.setState(({ todoData }) => {
       const newTodoData = [...todoData, newItem]
       return {
@@ -119,7 +119,6 @@ export default class App extends Component {
   }
 
   createTask(description, id, minutes, seconds) {
-    const trimDescription = description.replace(/ +/g, ' ').trim()
     let minValueNumber = +minutes
     let secValueNumber = +seconds
     if (secValueNumber > 60) {
@@ -129,7 +128,7 @@ export default class App extends Component {
 
     return {
       id,
-      description: trimDescription,
+      description,
       created: new Date(),
       completed: false,
       edited: false,

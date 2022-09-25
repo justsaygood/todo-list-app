@@ -13,19 +13,19 @@ export default class Task extends React.Component {
     min: this.props.minutes,
     // eslint-disable-next-line react/destructuring-assignment,react/prop-types
     sec: this.props.seconds,
+    time: '',
   }
 
   static propTypes = {
     checked: PropTypes.bool,
     onToggleDone: PropTypes.func,
-    description: PropTypes.string,
+    description: PropTypes.string.isRequired,
     creationTime: PropTypes.string,
     onEditClick: PropTypes.func,
     onCloseClick: PropTypes.func,
   }
 
   static defaultProps = {
-    description: 'Please, set the task',
     checked: false,
     onToggleDone: () => {},
     creationTime: () => {},
@@ -38,11 +38,19 @@ export default class Task extends React.Component {
   }
 
   minReduce = () => {
-    const { min } = this.state
-    this.setState({
-      min: min - 1,
-      sec: 59,
-    })
+    const { min, sec } = this.state
+    if (min === 0 && sec === 0) {
+      this.setState({
+        min: ' ',
+        sec: ' ',
+        time: 'time is up',
+      })
+    } else {
+      this.setState({
+        min: min - 1,
+        sec: 59,
+      })
+    }
   }
 
   secReduce = () => {
@@ -82,7 +90,7 @@ export default class Task extends React.Component {
 
   render() {
     const { description, onToggleDone, onCloseClick, onEditClick, checked, creationTime } = this.props
-    const { isCounting, min, sec } = this.state
+    const { isCounting, min, sec, time } = this.state
     const timerButtons = !isCounting ? (
       /* eslint-disable-next-line jsx-a11y/control-has-associated-label */
       <button className="icon icon-play" type="button" aria-label="Icon play" onClick={this.startTimer} />
@@ -99,7 +107,7 @@ export default class Task extends React.Component {
           <span className="timer">
             {timerButtons}
             <span className="timer__clock">
-              {min}:{sec}
+              {min}:{sec} {time}
             </span>
           </span>
           <span className="created">created {creationTime} ago</span>

@@ -26,7 +26,7 @@ export default class NewTaskForm extends React.Component {
       event.preventDefault()
 
       if (trimDescription === '') {
-        addTask('The task isn`t set', minutes, seconds)
+        alert('Please, set the task')
       } else {
         addTask(trimDescription, minutes, seconds)
       }
@@ -53,7 +53,9 @@ export default class NewTaskForm extends React.Component {
       <form className="new-todo-form" onKeyDown={this.onSubmitForm}>
         <input
           className="new-todo"
+          type="text"
           name="description"
+          required
           placeholder="What needs to be done?"
           onChange={this.onDescriptionChange}
           value={description}
@@ -61,19 +63,28 @@ export default class NewTaskForm extends React.Component {
         {/* eslint-disable-next-line jsx-a11y/no-autofocus */}
         <input
           className="new-todo-timer"
-          name="minutes"
           placeholder="Min"
-          onChange={this.onDescriptionChange}
+          name="minutes"
+          type="number"
+          min="0"
+          max="59"
+          required
           value={minutes}
+          onChange={this.onDescriptionChange}
         />
         {/* eslint-disable-next-line jsx-a11y/no-autofocus */}
         <input
           className="new-todo-timer"
-          name="seconds"
           placeholder="Sec"
-          onChange={this.onDescriptionChange}
+          name="seconds"
+          type="number"
+          min="0"
+          max="60"
+          required
           value={seconds}
+          onChange={this.onDescriptionChange}
         />
+        <input type="submit" style={{ display: 'none' }} />
       </form>
     )
   }

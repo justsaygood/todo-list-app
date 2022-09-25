@@ -2,10 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 export default class EditTask extends React.Component {
-  state = {
-    newDescription: '',
-  }
-
   static propTypes = {
     description: PropTypes.string,
     id: PropTypes.number.isRequired,
@@ -17,33 +13,47 @@ export default class EditTask extends React.Component {
     onChangeDescription: () => {},
   }
 
-  onEditTask = (event) => {
-    this.setState({
-      newDescription: event.target.value.replace(/ +/g, ' ').trim(),
-    })
+  blurEvent = true
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      description: props.description,
+    }
   }
 
   onEnterPress = (event) => {
-    const { onChangeDescription, id, description } = this.props
-    const { newDescription } = this.state
+    const { onChangeDescription, id } = this.props
+    const { description } = this.state
     if (event.keyCode === 13) {
-      if (newDescription === '') {
-        onChangeDescription(id, description)
-      } else {
-        onChangeDescription(id, newDescription)
-      }
+      onChangeDescription(id, description)
+    }
+  }
+
+  changeHandler = (e) => {
+    this.setState({
+      description: e.target.value,
+    })
+  }
+
+  onBlur = () => {
+    const { onChangeDescription, id } = this.props
+    const { description } = this.state
+    if (this.blurEvent) {
+      onChangeDescription(id, description)
     }
   }
 
   render() {
-    const { description } = this.props
+    const { description } = this.state
     return (
       <input
         type="text"
         className="edit"
-        placeholder={description}
-        onChange={this.onEditTask}
+        value={description}
+        onChange={this.changeHandler}
         onKeyDown={this.onEnterPress}
+        onBlur={this.onBlur}
       />
     )
   }
