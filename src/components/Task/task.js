@@ -81,15 +81,24 @@ export default class Task extends React.Component {
   }
 
   startTimer = (event) => {
+    const { checked } = this.props
     event.stopPropagation()
+    if (checked === true) return
     this.setState({ isCounting: true })
     this.counterID = setInterval(() => {
       this.secReduce()
     }, 1000)
   }
 
+  clickHandler = (e) => {
+    const { onEditClick } = this.props
+    onEditClick()
+    setTimeout(() => e.target.closest('li').querySelector('.edit').focus(), 50)
+    console.log('focus is working')
+  }
+
   render() {
-    const { description, onToggleDone, onCloseClick, onEditClick, checked, creationTime } = this.props
+    const { description, onToggleDone, onCloseClick, checked, creationTime } = this.props
     const { isCounting, min, sec, time } = this.state
     const timerButtons = !isCounting ? (
       /* eslint-disable-next-line jsx-a11y/control-has-associated-label */
@@ -112,7 +121,7 @@ export default class Task extends React.Component {
           </span>
           <span className="created">created {creationTime} ago</span>
         </div>
-        <button className="icon icon-edit" type="button" aria-label="Icon input edit" onClick={onEditClick} />
+        <button className="icon icon-edit" type="button" aria-label="Icon input edit" onClick={this.clickHandler} />
         <button className="icon icon-destroy" type="button" aria-label="Icon input deleted" onClick={onCloseClick} />
       </div>
     )
