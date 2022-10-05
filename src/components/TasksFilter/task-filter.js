@@ -1,90 +1,71 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, { useState, useContext } from 'react'
+
+import { AppContext } from '../../context/app-context'
 
 import './task-filter.css'
 
-export default class TasksFilter extends React.Component {
-  state = {
-    allBtn: true,
-    activeBtn: false,
-    completedBtn: false,
-  }
+function TasksFilter() {
+  const [allBtn, setAllBtn] = useState(true)
+  const [activeBtn, setActiveBtn] = useState(false)
+  const [completedBtn, setCompletedBtn] = useState(false)
 
-  static defaultProps = {
-    onFilterChange: () => {},
-  }
+  const { setFilter } = useContext(AppContext)
 
-  static propTypes = {
-    onFilterChange: PropTypes.func,
-  }
-
-  onClickButton = (event) => {
-    const buttonClicked = event.target.innerText.toLowerCase()
-
+  const onClickButton = (buttonClicked) => {
     if (buttonClicked === 'all') {
-      this.setState({
-        allBtn: true,
-        activeBtn: false,
-        completedBtn: false,
-      })
+      setAllBtn(true)
+      setActiveBtn(false)
+      setCompletedBtn(false)
     } else if (buttonClicked === 'active') {
-      this.setState({
-        allBtn: false,
-        activeBtn: true,
-        completedBtn: false,
-      })
+      setAllBtn(false)
+      setActiveBtn(true)
+      setCompletedBtn(false)
     } else {
-      this.setState({
-        allBtn: false,
-        activeBtn: false,
-        completedBtn: true,
-      })
+      setAllBtn(false)
+      setActiveBtn(false)
+      setCompletedBtn(true)
     }
   }
-
-  render() {
-    const { onFilterChange } = this.props
-    const { allBtn, activeBtn, completedBtn } = this.state
-
-    return (
-      <ul className="filters">
-        <li>
-          <button
-            type="button"
-            className={allBtn ? 'selected' : ''}
-            onClick={(event) => {
-              onFilterChange(event)
-              this.onClickButton(event)
-            }}
-          >
-            All
-          </button>
-        </li>
-        <li>
-          <button
-            type="button"
-            className={activeBtn ? 'selected' : ''}
-            onClick={(event) => {
-              onFilterChange(event)
-              this.onClickButton(event)
-            }}
-          >
-            Active
-          </button>
-        </li>
-        <li>
-          <button
-            type="button"
-            className={completedBtn ? 'selected' : ''}
-            onClick={(event) => {
-              onFilterChange(event)
-              this.onClickButton(event)
-            }}
-          >
-            Completed
-          </button>
-        </li>
-      </ul>
-    )
-  }
+  return (
+    <ul className="filters">
+      <li>
+        <button
+          type="button"
+          className={allBtn ? 'selected' : ''}
+          onClick={(e) => {
+            setFilter(e)
+            onClickButton('all')
+          }}
+        >
+          All
+        </button>
+      </li>
+      <li>
+        <button
+          type="button"
+          className={activeBtn ? 'selected' : ''}
+          onClick={(e) => {
+            setFilter(e)
+            onClickButton('active')
+          }}
+        >
+          Active
+        </button>
+      </li>
+      <li>
+        <button
+          type="button"
+          className={completedBtn ? 'selected' : ''}
+          onClick={(e) => {
+            setFilter(e)
+            onClickButton('completed')
+          }}
+        >
+          Completed
+        </button>
+      </li>
+    </ul>
+  )
 }
+
+export default TasksFilter

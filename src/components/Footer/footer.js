@@ -1,31 +1,21 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, { useContext } from 'react'
 
+import { AppContext } from '../../context/app-context'
 import TasksFilter from '../TasksFilter/task-filter'
 
 import './footer.css'
 
-function Footer({ tasksLeftCount, clearCompleted, onFilterChange }) {
+function Footer() {
+  const { tasksLeftCount, clearCompleted, setFilter } = useContext(AppContext)
   return (
     <footer className="footer">
       <span className="todo-count">{tasksLeftCount} items left</span>
-      <TasksFilter onFilterChange={onFilterChange} />
+      <TasksFilter onFilterChange={setFilter} />
       <button type="button" className="clear-completed" onClick={clearCompleted}>
         Clear completed
       </button>
     </footer>
   )
-}
-
-Footer.defaultProps = {
-  tasksLeftCount: 0,
-  clearCompleted: () => {},
-  onFilterChange: () => {},
-}
-Footer.propTypes = {
-  tasksLeftCount: PropTypes.number,
-  clearCompleted: () => {},
-  onFilterChange: () => {},
 }
 
 export default Footer

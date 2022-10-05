@@ -1,60 +1,59 @@
-import React from 'react'
+import React, { useState, useContext } from 'react'
 import PropTypes from 'prop-types'
 
-export default class EditTask extends React.Component {
-  static propTypes = {
-    description: PropTypes.string,
-    id: PropTypes.number.isRequired,
-    onChangeDescription: PropTypes.func,
+import { AppContext } from '../../context/app-context'
+
+function EditTask({ id, description }) {
+  const blurEvent = true
+
+  const { changeDescription } = useContext(AppContext)
+  const [newDescription, setNewDescription] = useState(description)
+
+  const changeHandler = (e) => {
+    setNewDescription(e.target.value)
+    console.log(e.target.value)
   }
 
-  static defaultProps = {
-    description: '',
-    onChangeDescription: () => {},
-  }
-
-  blurEvent = true
-
-  constructor(props) {
-    super(props)
-    this.state = {
-      description: props.description,
+  const onEnterPress = (e) => {
+    if (e.keyCode === 13) {
+      if (newDescription === description) {
+        changeDescription(id, description)
+      } else {
+        changeDescription(id, newDescription)
+      }
+    }
+    if (e.keyCode === 27) {
+      changeDescription(id, description)
     }
   }
 
-  onEnterPress = (event) => {
-    const { onChangeDescription, id } = this.props
-    const { description } = this.state
-    if (event.keyCode === 13) {
-      onChangeDescription(id, description)
+  const onBlur = () => {
+    if (blurEvent) {
+      changeDescription(id, description)
     }
   }
 
-  changeHandler = (e) => {
-    this.setState({
-      description: e.target.value,
-    })
-  }
+  return (
+    <input
+      type="text"
+      className="edit"
+      defaultValue={description}
+      onChange={changeHandler}
+      onKeyDown={onEnterPress}
+      onBlur={onBlur}
+    />
+  )
+}
 
-  onBlur = () => {
-    const { onChangeDescription, id } = this.props
-    const { description } = this.state
-    if (this.blurEvent) {
-      onChangeDescription(id, description)
-    }
-  }
+export default EditTask
 
-  render() {
-    const { description } = this.state
-    return (
-      <input
-        type="text"
-        className="edit"
-        value={description}
-        onChange={this.changeHandler}
-        onKeyDown={this.onEnterPress}
-        onBlur={this.onBlur}
-      />
-    )
-  }
+EditTask.propTypes = {
+  // eslint-disable-next-line react/no-unused-prop-types
+  description: PropTypes.string,
+  // eslint-disable-next-line react/no-unused-prop-types
+  id: PropTypes.number.isRequired,
+}
+
+EditTask.defaultProps = {
+  description: '',
 }
