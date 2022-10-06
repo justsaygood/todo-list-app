@@ -1,4 +1,4 @@
 TODO App - приложение список дел.
 
 Сайт опубликован: 
-https://todo-list-app-git-timer-justsaygood.vercel.app/
+https://todo-list-app-git-todo-hooks-justsaygood.vercel.app/
