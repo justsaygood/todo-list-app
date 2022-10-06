@@ -11,10 +11,9 @@ function EditTask({ id, description }) {
 
   const changeHandler = (e) => {
     setNewDescription(e.target.value)
-    console.log(e.target.value)
   }
 
-  const onEnterPress = (e) => {
+  const onKeyPress = (e) => {
     if (e.keyCode === 13) {
       if (newDescription === description) {
         changeDescription(id, description)
@@ -39,7 +38,7 @@ function EditTask({ id, description }) {
       className="edit"
       defaultValue={description}
       onChange={changeHandler}
-      onKeyDown={onEnterPress}
+      onKeyDown={onKeyPress}
       onBlur={onBlur}
     />
   )

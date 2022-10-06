@@ -16,7 +16,7 @@ function Task({ minutes, seconds, id, checked, creationTime, description }) {
   let updateSec = sec
 
   const tickTimer = (newCounterID) => {
-    if (updateMin === 0 && updateSec === 0) {
+    if ((updateMin === 0 && updateSec === 0) || time === 'time is up') {
       completeTask(id)
       setIsCounting(false)
       clearInterval(newCounterID)
@@ -34,6 +34,7 @@ function Task({ minutes, seconds, id, checked, creationTime, description }) {
     }
     setMin(updateMin)
     setSec(updateSec)
+    setTime('')
   }
 
   useEffect(() => {
@@ -79,8 +80,9 @@ function Task({ minutes, seconds, id, checked, creationTime, description }) {
         className="toggle"
         type="checkbox"
         readOnly
-        onClick={() => {
+        onClick={(e) => {
           completeTask(id)
+          handleStop(e)
         }}
         checked={checked}
       />

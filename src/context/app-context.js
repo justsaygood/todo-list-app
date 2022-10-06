@@ -82,7 +82,6 @@ export function Context(props) {
         return el
       })
     )
-    console.log('input', description)
   }
 
   const clearCompleted = () => {
