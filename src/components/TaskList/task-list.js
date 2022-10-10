@@ -46,13 +46,11 @@ function TaskList() {
 
     if (filterData === 'active' && item.completed) {
       classNames = 'completed--hidden'
-      console.log('if filData', filterData, 'class is', classNames)
       return taskListElement(id, classNames, description, creationTime, checked, minutes, seconds, edited)
     }
 
     if (filterData === 'completed' && !item.completed) {
       classNames = 'active--hidden'
-      console.log('if filData', filterData, 'class is', classNames)
       return taskListElement(id, classNames, description, creationTime, checked, minutes, seconds, edited)
     }
     return taskListElement(id, classNames, description, creationTime, checked, minutes, seconds, edited)
